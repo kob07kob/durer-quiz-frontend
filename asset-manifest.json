@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/durer-quiz-frontend/static/css/main.ab7136cd.chunk.css",
-    "main.js": "/durer-quiz-frontend/static/js/main.3ea6b734.chunk.js",
-    "main.js.map": "/durer-quiz-frontend/static/js/main.3ea6b734.chunk.js.map",
+    "main.js": "/durer-quiz-frontend/static/js/main.21c2dfb8.chunk.js",
+    "main.js.map": "/durer-quiz-frontend/static/js/main.21c2dfb8.chunk.js.map",
     "runtime-main.js": "/durer-quiz-frontend/static/js/runtime-main.3716dc3f.js",
     "runtime-main.js.map": "/durer-quiz-frontend/static/js/runtime-main.3716dc3f.js.map",
-    "static/js/2.a6d61942.chunk.js": "/durer-quiz-frontend/static/js/2.a6d61942.chunk.js",
-    "static/js/2.a6d61942.chunk.js.map": "/durer-quiz-frontend/static/js/2.a6d61942.chunk.js.map",
+    "static/js/2.d684fb57.chunk.js": "/durer-quiz-frontend/static/js/2.d684fb57.chunk.js",
+    "static/js/2.d684fb57.chunk.js.map": "/durer-quiz-frontend/static/js/2.d684fb57.chunk.js.map",
     "static/js/3.8694ba83.chunk.js": "/durer-quiz-frontend/static/js/3.8694ba83.chunk.js",
     "static/js/3.8694ba83.chunk.js.map": "/durer-quiz-frontend/static/js/3.8694ba83.chunk.js.map",
     "index.html": "/durer-quiz-frontend/index.html",
     "static/css/main.ab7136cd.chunk.css.map": "/durer-quiz-frontend/static/css/main.ab7136cd.chunk.css.map",
-    "static/js/2.a6d61942.chunk.js.LICENSE.txt": "/durer-quiz-frontend/static/js/2.a6d61942.chunk.js.LICENSE.txt"
+    "static/js/2.d684fb57.chunk.js.LICENSE.txt": "/durer-quiz-frontend/static/js/2.d684fb57.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.3716dc3f.js",
-    "static/js/2.a6d61942.chunk.js",
+    "static/js/2.d684fb57.chunk.js",
     "static/css/main.ab7136cd.chunk.css",
-    "static/js/main.3ea6b734.chunk.js"
+    "static/js/main.21c2dfb8.chunk.js"
   ]
 }
