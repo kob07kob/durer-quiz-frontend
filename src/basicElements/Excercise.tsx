@@ -56,7 +56,7 @@ export const Excercise: React.FunctionComponent<MyProps> = (props: MyProps) => {
   return <MainBox mainTitle={`${data.order + 1}.feladat: ${data.title}`} subTitle={`${data.sequence + 1}. próba, ${data.points} pontért`}>
     <div dangerouslySetInnerHTML={{ __html: completestring }} />
     {data.attachments.map(element => {
-      return <img src={`${process.env.PUBLIC_URL}/logo_kicsik_nagyok.png`} style={{maxWidth:'80%', display: 'flex', marginLeft:'auto', marginRight: 'auto'}}/>;
+      return <img src={element.uri} style={{maxWidth:'80%', display: 'flex', marginLeft:'auto', marginRight: 'auto'}}/>;
     })}
     <Divider variant="middle" style={{ marginTop: '10px', marginBottom: '10px' }} />
     <Form initialValues={{ result: '' }} validationSchema={Yup.object().shape({
