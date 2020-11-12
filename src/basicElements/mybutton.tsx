@@ -5,6 +5,7 @@ export interface MyProps{
     label: string;
     type: "button" | "reset" | "submit" | undefined;
     className?: string;
+    onClick?: (event:any)=>any;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -19,5 +20,5 @@ const useStyles = makeStyles(theme => ({
 
 export const MyButton: React.FunctionComponent<MyProps> = (props: MyProps) => {
     const classes = useStyles();
-    return <Button color='primary' className={`${classes.root} ${props.className}`} variant='contained' type={props.type}>{props.label}</Button>
+    return <Button onClick={(event)=>{if(props.onClick) props.onClick(event)}} color='primary' className={`${classes.root} ${props.className}`} variant='contained' type={props.type}>{props.label}</Button>
 }

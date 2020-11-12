@@ -1,13 +1,11 @@
 export interface CurrentUser {
-    id: number;
-    name: string;
+    categoryName: string;
+    categoryUuid: string;
     email: string;
 }
 
 export interface JwtPayload {
-    id: number;
-    name: string;
+    category: {name: string, uuid: string};
     email: string;
-
-    exp: number;
+    exp:number;
 }

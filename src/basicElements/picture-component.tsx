@@ -15,10 +15,10 @@ export interface Picture {
 
 export const WebshopPicture: React.FunctionComponent<PictureProps> = (props: PictureProps) => {
     return <picture>
-        <source srcSet={props.picture?.jpegOrPngUrl}/>
+        <source srcSet={`${process.env.PUBLIC_URL}${props.picture?.webPUrl}`}/>
         <img style={props.style}
              className={props.className}
-             src={props.picture?.jpegOrPngUrl}
+             src={`${process.env.PUBLIC_URL}${props.picture?.jpegOrPngUrl}`}
              alt={props.picture.alt}
              title={props.picture?.title}/>
     </picture>;
