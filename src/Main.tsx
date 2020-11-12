@@ -16,15 +16,8 @@ function Main() {
   
   const [category, setCategory] = useState({ uuid: '', ends_at: '', name: '', starts_at:'' } as Category);
   const authHeader = useAuthHeader();
-  const task1 = `az első egyenletből kapott $6c = 5h$ feltételt behelyettesítve a baloldalra :
-  $$30c-1100 = 8c$$
-  $$22c = 1100$$
-  $$c = 50$$
-  Ekkor a $\\frac{6}{5} c = h$ egyenletből $h = \\frac{6}{5} \\cdot 50 = 60$, tehát
-  Ákos $c+h = 50+60 = 110$ csirkefalatot és hagymakarikát rendelt összesen.`;
 
   const user = useCurrentUser();
-  console.log('user', user)
   useEffect(() => {
     if (user) {
       getTeam(authHeader).then(team => {
@@ -41,25 +34,6 @@ function Main() {
       });
     }
   }, [user]);
-  console.log(team);
-
-  const task2 = `Azt állítjuk, hogy Gábor legfeljebb 14 számot írhatott fel. Pontosan 14 számot
-  felírhatott például a következőképpen:
-  \\[\\begin{array}{l|cccccccccccccc}
-  \\text{szám}&199&279&287&295&339&347&355&363&371&406&414&422&430&501\\\\
-  \\text{számjegyösszeg}&19&18&17&16&15&14&13&12&11&10&9&8&7&6
-  \\end{array}\\]
-  A továbbiakban belátjuk, hogy több szám nem írható fel a megadott módon.
-  Tegyük fel, hogy $a_1, a_2, \\ldots, a_{15}$ háromjegyű számok, melyek
-  számjegyösszegei rendre $d_1,d_2,\\ldots, d_{15}$, és teljesül, hogy
-  \\[\\begin{aligned}
-      a_1 < a_2 < \\ldots < a_{15}\\\\
-      d_1 > d_2 > \\ldots > d_{15}
-  \\end{aligned}\\]
-  Ha mindegyik száme`;
-const script = `
-import { LaTeXJSComponent } from "https://cdn.jsdelivr.net/npm/latex.js/dist/latex.mjs"
-customElements.define("latex-js", LaTeXJSComponent)`
   return (
     <Layout>
       {!user && <Login />}

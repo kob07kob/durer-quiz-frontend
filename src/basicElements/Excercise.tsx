@@ -62,7 +62,7 @@ export const Excercise: React.FunctionComponent<MyProps> = (props: MyProps) => {
     <Form initialValues={{ result: '' }} validationSchema={Yup.object().shape({
       result: Yup.number('Számot kell írnod').min(1, 'A válasz 1 és 9999 között van').max(9999, 'A válasz 1 és 9999 között van').required('Nem írtál semmi választ!')
     })}
-      onSubmit={async (values) => {/*
+      onSubmit={async (values) => {
         const result = await fetch(`${serverUrl}/submit`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json', ...props.auth },
@@ -79,37 +79,7 @@ export const Excercise: React.FunctionComponent<MyProps> = (props: MyProps) => {
           setRefresh(!refresh)
           return;
         }
-        const next:Submission = await result.json();*/
-        const next = {
-          "next": {
-              "attachments": [
-                  {
-                      "caption": "",
-                      "exercise_uuid": "51dd9ac2-9475-4526-af9a-0a27edeef4d0",
-                      "mime_type": "image/png",
-                      "uri": "https://valto.durerinfo.hu/static/attachments/3dbec33b-8623-474a-b1dc-05c8b22e2423.png",
-                      "uuid": "3dbec33b-8623-474a-b1dc-05c8b22e2423"
-                  }
-              ],
-              "category_ord": 3,
-              "description": "Hány négylevelű lóhere látható az ábrán?",
-              "max_points": 3,
-              "max_retries": 3,
-              "sequence_number": 0,
-              "title": "A-1",
-              "uuid": "51dd9ac2-9475-4526-af9a-0a27edeef4d0"
-          },
-          "submission": {
-              "exercise_uuid": "0a6af38c-8636-44fe-b833-244f21487977",
-              "guess": 30,
-              "guess_correct": true,
-              "points_earned": 3,
-              "sequence": 0,
-              "submitted_at": "2020-11-12T06:15:01+0000",
-              "team_uuid": "bd5a7e85-6d69-4718-afff-e50049982d12",
-              "uuid": "fab01221-8533-4e1d-aa71-b426ad61e038"
-          }
-      }
+        const next = await result.json();
         const exercise = next?.next;
         if(next?.submission?.guess_correct){
           alert('A válasz helyes volt')
