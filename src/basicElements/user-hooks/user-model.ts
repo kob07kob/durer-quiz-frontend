@@ -101,7 +101,7 @@ export class UserModel {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 method: 'email-password',
-                emai: email,
+                email: email,
                 password: password,
             }),
             
