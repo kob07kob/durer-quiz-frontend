@@ -6,6 +6,7 @@ import { Excercise } from './basicElements/Excercise';
 import { Infos } from './basicElements/infos';
 import { Layout } from './basicElements/layout';
 import { Login } from './basicElements/login';
+import { LoadUserOnClientSide } from './basicElements/user-hooks/user-atom';
 //import Latex as Latex from 'react-latex';
 import { useAuthHeader, useCurrentUser } from './basicElements/user-hooks/user-hooks';
 
@@ -36,6 +37,7 @@ function Main() {
   }, [user]);
   return (
     <Layout>
+      <LoadUserOnClientSide/>
       {!user && <Login />}
       {user && info && <Infos setInfo={setInfo} teamName={team.name} categoryName={category.name} categoryEnd={category.ends_at} categoryStart={category.starts_at}/>}
       {user && !info && <Excercise auth={authHeader} exercise={exercise} />}

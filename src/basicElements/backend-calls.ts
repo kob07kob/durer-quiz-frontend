@@ -8,7 +8,13 @@ export async function getCurrentExercise(auth: { Authorization: string }): Promi
         headers: { ...auth },
     });
     if (!result.ok) return null;
-    return await result.json();
+    try {
+        const res = await result.json();
+        return res;
+    } catch (error) {
+        console.log(result);
+        return null;
+    }
 }
 export async function getTeam(auth: { Authorization: string }): Promise<Team | null> {
     const result = await fetch(`${serverUrl}/team/my`, {

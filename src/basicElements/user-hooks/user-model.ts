@@ -71,7 +71,6 @@ export class UserModel {
             token: token,
             decodedToken: payload,
         };
-        console.log('payload', payload);
 
         return {
             email: payload.email,
@@ -107,7 +106,8 @@ export class UserModel {
             
         });
         if (!loginResult.ok) {
-            return (await loginResult.json() as any)?.error || 'Valami hiba történt!';
+            const errorMessage = (await loginResult.json() as any)?.error;
+            return errorMessage==='Unauthorized'? 'Hibás email/jelszó': 'Valami hiba történt!';
         }
         const access_token =await loginResult.text();
          //const access_token = 'eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJjYXRlZ29yeSI6eyJuYW1lIjoiT3ZvZGFzIGthdGVnb3JpYSIsInV1aWQiOiIxNTU1YjFlMy1mNzA2LTRkYjgtOTlhNC05ZDY4M2I0M2NlNDIifSwiZW1haWwiOiJ0b21pQGNzaWxsaW5nLmNvbSIsImV4cCI6MTYwNTE0NDI5NSwiaWF0IjoxNjA1MTM4ODk1LCJpc3MiOiJodHRwczovL3ZhbHRvLmR1cmVyaW5mby5odS8iLCJqdGkiOiJYRU1GaHQ5VWZlRlRTQ0lCOXBmZGp3IiwibmJmIjoxNjA1MTM4ODk1LCJzdWIiOiJiZDVhN2U4NS02ZDY5LTQ3MTgtYWZmZi1lNTAwNDk5ODJkMTIifQ.SM8pps10Z62WLgr3ar0fHsoH1OHwZiy5fYJVgLnZkJ4WoUOmE0_0lpr9sJdy9ifTi59xnjJjnAk4h-GH0BrCpdbuOF0dL5nAkWysFRnVWt6c0rHPL6ZCE_M87gnvrIzLBwN0kmqnpZ5vc0W8bXXccwNIU94siibFWBv9wDgllXdg8q7ZQek5wpu30BsCYHsr0VA8zSco8rGwJscfqimHt93qkrXzQ0vpvxplBYsQauIQINHNhkR9_xO0uZ3EX-PtHKh0moyCvsJfZ8Tjdf6MTZuNODCr5ejE_us5htw_4dcFDzgQUxv5hPsIyiqmQsbMXlsMFjPgJ68rnuW8S0kxD0bD8oPixb1AOg5SJvYl-OvdgsnbRfS3J0SlqthnRM867yWn0tNXFAR-MK8UmdzOxfjcyT36M0Wn4UL0juNRM-QEHVbFvA8byfhE3lodYLLvNOwusc_bh9db_Y3o-WdPOP278E1RpRuutgBwLhcA22ciCGhgEvxSdsKbNkbCSXLO3PVBHy4yu6pfcTOXZQekgwGno82u3tm1cPrsj8N6CuISayVNmV9F9iX6_ByyngEwpANT15o9OPrUz2tHJ6NWzxEnFjr39mV4xKt8Z-ONJ-smzhzTPxaVpWit5erP0xGXBBln6xE5GjQetNtpFYbNFSS-4SrU5FDNnOT8IinjUS0';//this.jwtService.sign(payload, { expiresIn: '1 days' });
