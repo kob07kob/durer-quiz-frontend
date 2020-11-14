@@ -69,7 +69,7 @@ const classes = useStyles();
 const login= useLogin();
 return <div className={classes.root} style={{maxHeight: '400px'}}>
   {forgotPass==0 && <Form style={{position: "relative", zIndex: 2}} initialValues={{email:'', password: ''}} validationSchema={Yup.object().shape({
-            email: Yup.string().required('email kitöltése kötelező'),
+            email: Yup.string().required('E-mail kitöltése kötelező'),
           })}
                   onSubmit={async (values) => {
                     const res = await login(values.email, values.password);
@@ -81,7 +81,7 @@ return <div className={classes.root} style={{maxHeight: '400px'}}>
                   <Field name="email"
                          type="text"
                          component={MyTextInput}
-                         label="Felhasznlónév"
+                         label="E-mail"
                          otherProps = {{labelWhere: LabelType.Above}}
                          className = {classes.element}
                   />

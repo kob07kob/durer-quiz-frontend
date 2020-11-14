@@ -74,7 +74,7 @@ export const Excercise: React.FunctionComponent<MyProps> = (props: MyProps) => {
 
         });
         if (!result.ok) {
-          alert((await result.json() as any)?.error || 'hiba a bekldés során!');
+          alert((await result.json() as any)?.error || 'Hiba a beküldés során!');
           values.result = '';
           setRefresh(!refresh)
           return;
