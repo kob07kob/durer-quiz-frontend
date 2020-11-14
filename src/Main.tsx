@@ -36,7 +36,7 @@ function Main() {
   return (
     <Layout>
       {!user && <Login />}
-      {user && info && <Infos setInfo={setInfo} teamName={team.name} categoryName={category.name} categoryEnd={category.ends_at?.calendar()} categoryStart={category.starts_at?.calendar()}/>}
+      {user && info && <Infos setInfo={setInfo} teamName={team.name} categoryName={category.name} categoryEnd={category.ends_at} categoryStart={category.starts_at}/>}
       {user && !info && <Excercise auth={authHeader} exercise={exercise} />}
     </Layout>
   );
