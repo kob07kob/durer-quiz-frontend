@@ -1,3 +1,4 @@
+import moment from 'moment'
 export interface ExerciseAttachment {
     uuid: string;
     caption: string;
@@ -35,8 +36,8 @@ export interface Submission{
 }
 
 export interface Category{
-    ends_at: string;
+    ends_at: moment.Moment;
     name: string;
-    starts_at: string;
+    starts_at: moment.Moment;
     uuid: string;
 }

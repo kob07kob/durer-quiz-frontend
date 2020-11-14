@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles } from '@material-ui/core';
 import { WebshopPicture } from "./picture-component";
 import { MyButton } from "./mybutton";
+import moment from 'moment';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -58,23 +59,26 @@ const useStyles = makeStyles(theme => ({
 
 export interface Props{
   teamName:string;
-  categoryName:string;
-  categoryStart: string;
-  categoryEnd: string;
+  categoryName: string;
+  categoryStart: moment.Moment;
+  categoryEnd: moment.Moment;
   setInfo: (val:boolean)=>any;
 }
 
 export const Infos = (props:Props) => {
 const classes = useStyles();
+let now = moment()
+let enabled = props.categoryStart && props.categoryEnd && props.categoryStart.isBefore(now) && props.categoryEnd.isAfter(now)
+
 return <div className={classes.root} style={{maxHeight: '400px'}}>
   <div style={{position: "relative", zIndex: 2}}>
                   <div className={classes.formDiv}>
                     <div>Csapatnév: {props.teamName}</div>
                     <div>Kategória: {props.categoryName}</div>
-                    <div>Kitöltés kezdete: {props.categoryStart}</div>
-                    <div>Kitöltés vége: {props.categoryEnd}</div>
-                    <MyButton type='button' label="Kitöltés megkezdése" onClick={(event:any)=>{props.setInfo(false)}}
-                         className = {classes.element}/>
+                    <div>Kitöltés kezdete: {props.categoryStart?.calendar()}</div>
+                    <div>Kitöltés vége: {props.categoryEnd?.calendar()}</div>
+                      <MyButton type='button' label="Kitöltés megkezdése" onClick={(event:any)=>{props.setInfo(false)}}
+                          className = {classes.element} disabled={!enabled}/>
                   </div>
                 </div>
           <WebshopPicture className={classes.picture} picture={{webPUrl: '/logo_kicsik_nagyok.png', jpegOrPngUrl: '/logo_kicsik_nagyok.png', alt: 'login', title: 'login'}}/>

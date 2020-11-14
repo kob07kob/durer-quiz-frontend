@@ -14,8 +14,7 @@ function Main() {
   const [info, setInfo] = useState(true);
   const [team, setTeam] = useState({ uuid: '', email: '', name: '' } as Team);
   const [exercise, setExercise] = useState({} as Exercise);
-  
-  const [category, setCategory] = useState({ uuid: '', ends_at: '', name: '', starts_at:'' } as Category);
+  const [category, setCategory] = useState({} as Category);
   const authHeader = useAuthHeader();
 
   const user = useCurrentUser();

@@ -1,6 +1,7 @@
 import { serverUrl } from "../constants";
 import { Category, Exercise, Team } from "./backend-types"
 import { useAuthHeader } from "./user-hooks/user-hooks";
+import moment from "moment"
 
 export async function getCurrentExercise(auth: { Authorization: string }): Promise<Exercise | null> {
     const result = await fetch(`${serverUrl}/exercise/current`, {
@@ -30,5 +31,6 @@ export async function getCategory(auth: { Authorization: string }, uuid: string)
         headers: { ...auth },
     });
     if (!result.ok) return null;
-    return await result.json();
+    let raw_obj = await result.json();
+    return {'starts_at': moment(raw_obj.starts_at), 'ends_at': moment(raw_obj.ends_at), 'uuid': raw_obj.category, 'name': raw_obj.name}
 }
