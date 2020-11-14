@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles } from '@material-ui/core';
 import { WebshopPicture } from "./picture-component";
 import { MyButton } from "./mybutton";
+import moment from 'moment';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -66,6 +67,7 @@ export interface Props{
 
 export const Infos = (props:Props) => {
 const classes = useStyles();
+
 return <div className={classes.root} style={{maxHeight: '400px'}}>
   <div style={{position: "relative", zIndex: 2}}>
                   <div className={classes.formDiv}>

@@ -13,8 +13,7 @@ function Main() {
   const [info, setInfo] = useState(true);
   const [team, setTeam] = useState({ uuid: '', email: '', name: '' } as Team);
   const [exercise, setExercise] = useState({} as Exercise);
-  
-  const [category, setCategory] = useState({ uuid: '', ends_at: '', name: '', starts_at:'' } as Category);
+  const [category, setCategory] = useState({} as Category);
   const authHeader = useAuthHeader();
 
   const user = useCurrentUser();
@@ -37,7 +36,7 @@ function Main() {
   return (
     <Layout>
       {!user && <Login />}
-      {user && info && <Infos setInfo={setInfo} teamName={team.name} categoryName={category.name} categoryEnd={category.ends_at} categoryStart={category.starts_at}/>}
+      {user && info && <Infos setInfo={setInfo} teamName={team.name} categoryName={category.name} categoryEnd={category.ends_at?.calendar()} categoryStart={category.starts_at?.calendar()}/>}
       {user && !info && <Excercise auth={authHeader} exercise={exercise} />}
     </Layout>
   );
