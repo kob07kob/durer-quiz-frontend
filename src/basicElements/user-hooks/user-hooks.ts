@@ -26,6 +26,21 @@ export const useLogin = () => {
     };
 };
 
+export const useLoginOtt = () => {
+    const [user, setUser] = useRecoilState(currentUserAtom);
+
+    return async (email: string, token: string) => {
+        const loginErrors = await userModel.loginOtt(email, token);
+
+        if (!loginErrors) {
+            const user = await userModel.getCurrentUser();
+            setUser(user);
+        }
+
+        return loginErrors;
+    };
+};
+
 export const useLogout = () => {
     const [user, setUser] = useRecoilState(currentUserAtom);
     return () => {

@@ -15,7 +15,7 @@ export interface Picture {
 
 export const WebshopPicture: React.FunctionComponent<PictureProps> = (props: PictureProps) => {
     return <picture>
-        <source srcSet={`${process.env.PUBLIC_URL}${props.picture?.webPUrl}`}/>
+        <source srcSet={`${process.env.PUBLIC_URL}${props.picture?.webPUrl}`} type="image/webp"/>
         <img style={props.style}
              className={props.className}
              src={`${process.env.PUBLIC_URL}${props.picture?.jpegOrPngUrl}`}

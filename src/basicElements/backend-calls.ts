@@ -34,3 +34,16 @@ export async function getCategory(auth: { Authorization: string }, uuid: string)
     let raw_obj = await result.json();
     return {'starts_at': moment(raw_obj.starts_at), 'ends_at': moment(raw_obj.ends_at), 'uuid': raw_obj.category, 'name': raw_obj.name}
 }
+export async function sendEmail(email:string): Promise<string>{
+    const result = await fetch(`${serverUrl}/login/team/send-ott`, {
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            email: email,
+        }),
+    });
+    if(result.ok) return "";
+    if(result.status === 420) return 'Túl sok próbálkozás!';
+    if(result.status === 403) return 'Tiltott művelet!'
+    else return 'A backenden még nem él az url';
+}

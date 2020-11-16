@@ -9,14 +9,19 @@ import { Login } from './basicElements/login';
 import { LoadUserOnClientSide } from './basicElements/user-hooks/user-atom';
 //import Latex as Latex from 'react-latex';
 import { useAuthHeader, useCurrentUser } from './basicElements/user-hooks/user-hooks';
+import { OneTimeTokenLogin } from './basicElements/ott-login';
+import { 
+  useLocation,
+} from "react-router-dom";
 
 function Main() {
   const [info, setInfo] = useState(true);
   const [team, setTeam] = useState({ uuid: '', email: '', name: '' } as Team);
   const [exercise, setExercise] = useState({} as Exercise);
   const [category, setCategory] = useState({} as Category);
+  const tokenGetter= new URLSearchParams(useLocation().search);
+  const token = tokenGetter.get("one-time-auth")
   const authHeader = useAuthHeader();
-
   const user = useCurrentUser();
   useEffect(() => {
     if (user) {
@@ -34,6 +39,13 @@ function Main() {
       });
     }
   }, [user]);
+  if(token){
+    return (
+      <Layout>
+        <OneTimeTokenLogin token = {token}/>
+      </Layout>
+    )
+  }
   return (
     <Layout>
       <LoadUserOnClientSide/>

@@ -5,10 +5,10 @@ import * as Yup from 'yup';
 import Field from './form/field';
 import { LabelType, MyTextInput } from "./mytext-input";
 import { MyButton } from "./mybutton";
-import { useLogin } from "./user-hooks/user-hooks";
+import { useLoginOtt } from "./user-hooks/user-hooks";
 import { useSnackbar } from 'notistack';
 import { WebshopPicture } from "./picture-component";
-import { sendEmail } from "./backend-calls";
+import {useRouter} from 'next/router';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -62,22 +62,31 @@ const useStyles = makeStyles(theme => ({
     }
   }
 }))
+export interface Props{
+  token: string,
+}
 
-export const Login = () => {
-const [forgotPass, setForgotPass] = useState(0);
+export const OneTimeTokenLogin = (props: Props) => {
 const { enqueueSnackbar } = useSnackbar();
 const classes = useStyles();
-const login= useLogin();
+const login= useLoginOtt();
+const goToFront = async ()=>{
+  window.location.href = '/';
+}
 return <div className={classes.root} style={{maxHeight: '400px'}}>
-  {forgotPass==0 && <Form style={{position: "relative", zIndex: 2}} initialValues={{email:'', password: ''}} validationSchema={Yup.object().shape({
+  <Form style={{position: "relative", zIndex: 2}} initialValues={{email:'', password: ''}} validationSchema={Yup.object().shape({
             email: Yup.string()
             .email('Érvénytelen email formátum')
             .required('E-mail kitöltése kötelező'),
           })}
                   onSubmit={async (values) => {
-                    const res = await login(values.email, values.password);
+                    const res = await login(values.email, props.token);
                     if(res){
                       enqueueSnackbar(res, { variant: 'error' });
+                    }
+                    else {
+                      window.location.href = '/';
+                      //await Router.push(`/`, undefined, { shallow: true });
                     }
                   }}>
                   <div className={classes.formDiv}>
@@ -85,52 +94,16 @@ return <div className={classes.root} style={{maxHeight: '400px'}}>
                          type="text"
                          component={MyTextInput}
                          label="E-mail"
-                         otherProps = {{labelWhere: LabelType.Above}}
-                         className = {classes.element}
-                  />
-                  <Field name="password"
-                         type="password"
-                         component={MyTextInput}
-                         label="jelszó"
                          otherProps = {{labelWhere: LabelType.Above}}
                          className = {classes.element}
                   />
                   <MyButton type="submit" label="Belépés" 
                          className = {classes.element}/>
-                  <a className={classes.link} onClick={()=>{setForgotPass(1)}}>
-                    Elfelejtettem a jelszavam
-                  </a>
+                         <a className={classes.link} onClick={()=>{goToFront()}}>
+                          vissza a bejelentkezéshez
+                         </a>
                   </div>
-          </Form>}
-          {forgotPass==1 && <Form style={{position: "relative", zIndex: 2}} initialValues={{email:''}} validationSchema={Yup.object().shape({
-            email: Yup.string()
-            .email('Érvénytelen email formátum')
-            .required('Email szükséges'),
-          })}
-                  onSubmit={async (values) => {
-                    const res = await sendEmail(values.email);
-                    if(res){
-                      enqueueSnackbar(res, { variant: 'error' });
-                    }
-                    else {
-                      enqueueSnackbar("Az emailt sikeresen elküldtük!", { variant: 'success' });
-                    }
-                  }}>
-                  <div className={classes.formDiv}>
-                  <Field name="email"
-                         type="text"
-                         component={MyTextInput}
-                         label="E-mail"
-                         otherProps = {{labelWhere: LabelType.Above}}
-                         className = {classes.element}
-                  />
-                  <MyButton type="submit" label="Küldés" 
-                         className = {classes.element}/>
-                  <a className={classes.link} onClick={()=>{setForgotPass(0)}}>
-                    vissza a bejelentkezéshez
-                  </a>
-                  </div>
-          </Form>}
+          </Form>
           <WebshopPicture className={classes.picture} picture={{webPUrl: '/logo_kicsik_nagyok.png', jpegOrPngUrl: '/logo_kicsik_nagyok.png', alt: 'login', title: 'login'}}/>
       </div>;
 }

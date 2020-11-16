@@ -9,6 +9,7 @@ import { LabelType, MyTextInput } from "./mytext-input";
 import { MyButton } from "./mybutton";
 import { Exercise, Submission } from "./backend-types";
 import { serverUrl } from "../constants";
+import { useSnackbar } from "notistack";
 
 
 export interface MyProps {
@@ -42,6 +43,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export const Excercise: React.FunctionComponent<MyProps> = (props: MyProps) => {
+  const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
   const [data, setData] = useState({
     sequence: props.exercise.sequence_number, points: props.exercise.max_points-props.exercise.sequence_number,
@@ -60,7 +62,7 @@ export const Excercise: React.FunctionComponent<MyProps> = (props: MyProps) => {
     })}
     <Divider variant="middle" style={{ marginTop: '10px', marginBottom: '10px' }} />
     <Form initialValues={{ result: '' }} validationSchema={Yup.object().shape({
-      result: Yup.number('Számot kell írnod').min(1, 'A válasz 1 és 9999 között van').max(9999, 'A válasz 1 és 9999 között van').required('Nem írtál semmi választ!')
+      result: Yup.number().typeError('Számot kell írnod').min(1, 'A válasz 1 és 9999 között van').max(9999, 'A válasz 1 és 9999 között van').required('Nem írtál semmi választ!')
     })}
       onSubmit={async (values) => {
         const result = await fetch(`${serverUrl}/submit`, {
@@ -74,7 +76,7 @@ export const Excercise: React.FunctionComponent<MyProps> = (props: MyProps) => {
 
         });
         if (!result.ok) {
-          alert((await result.json() as any)?.error || 'Hiba a beküldés során!');
+          enqueueSnackbar((await result.json() as any)?.error || 'Hiba a beküldés során!', { variant: 'error' });
           values.result = '';
           setRefresh(!refresh)
           return;
@@ -82,9 +84,9 @@ export const Excercise: React.FunctionComponent<MyProps> = (props: MyProps) => {
         const next = await result.json();
         const exercise = next?.next;
         if(next?.submission?.guess_correct){
-          alert('A válasz helyes volt')
+          enqueueSnackbar('A válasz helyes volt', { variant: 'success' });
         }else{
-          alert('A válasz nem volt jó')
+          enqueueSnackbar('A válasz nem volt jó', { variant: 'error' });
         }
         if(exercise?.title){
           setData({
