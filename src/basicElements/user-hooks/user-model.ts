@@ -61,6 +61,9 @@ export class UserModel {
         }
 
         const payload = UserModel.decodeToken(token);
+        if(UserModel.isTokenExpired(payload)){
+            return null;
+        }
 
         /*if (UserModel.isTokenExpired(payload)) {
             localStorage.removeItem(LOCAL_STORAGE_JWT_KEY);

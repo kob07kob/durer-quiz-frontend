@@ -10,7 +10,7 @@ export interface MyProps extends React.HTMLProps<any> {
 const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
-        marginTop: '-70px',
+        marginTop: '-120px',
         overflow: 'hidden',
         [theme.breakpoints.down(1000)]: {
             marginTop: '-5px',

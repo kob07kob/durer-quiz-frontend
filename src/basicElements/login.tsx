@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
     padding: '30px 60px',
     borderRadius: '30px',
     color: theme.palette.secondary.contrastText,
-    marginTop: '-70px',
+    marginTop: '-120px',
     overflow: 'hidden',
     backgroundColor: '#fff',
     maxWidth: '700px',

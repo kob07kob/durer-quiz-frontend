@@ -15,6 +15,9 @@ const useStyles = makeStyles(theme => ({
             height: '60px',
             borderRadius: '34px',
             fontSize: '18px',
+        },
+        '&.MuiButton-contained.Mui-disabled': {
+            backgroundColor: '#e0e0e0',
         }
     },
 }))

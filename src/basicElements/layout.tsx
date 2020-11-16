@@ -10,7 +10,7 @@ export interface MyProps extends React.HTMLProps<any> {
 const useStyles = makeStyles((theme: any) => ({
     bg: {
         display: 'none',
-        [theme.breakpoints.up(1900)]: {
+        [theme.breakpoints.up(1400)]: {
             display: 'block'
         },
         position: 'absolute',
@@ -28,11 +28,11 @@ const useStyles = makeStyles((theme: any) => ({
         overflow: 'hidden'
     },
     root: {
-        [theme.breakpoints.up(1900)]: {
+        [theme.breakpoints.up(1400)]: {
             left: '50%',
-            marginLeft: '-50vw',
-            marginRight: '-50vw',
-            maxWidth: '100vw',
+            marginLeft: '-50%',
+            marginRight: '-50%',
+            maxWidth: '100%',
             position: 'relative',
             right: '50%',
             width: '100%'
@@ -40,19 +40,22 @@ const useStyles = makeStyles((theme: any) => ({
     },
     image: {
         maxWidth: '100%',
-        width: 'auto',
+        width: '1400px',
         marginBottom: '-5px',
-        height: '350px',
+        height: 'auto',
         marginLeft: 'auto',
         marginRight: 'auto',
         zIndex: 20,
-        [theme.breakpoints.up(1900)]: {
+        marginTop: '-7%',
+        [theme.breakpoints.up(1400)]: {
             marginBottom: '-5px',
-            height: '350px',
-            width: 'auto',
+            height: 'auto',
+            width: '1400px',
             maxWidth: '100%',
+            marginTop: '-100px',
         },
         [theme.breakpoints.down(1000)]: {
+            marginTop: '0px',
             marginBottom: '-5px',
             height: 'auto',
             width: '100%',
@@ -68,6 +71,18 @@ const useStyles = makeStyles((theme: any) => ({
         display: 'flex',
         justifyContent: 'center'
     },
+    magicBox: {
+        [theme.breakpoints.down(1000)]: {
+            height: '0px',
+            marginTop: '0px',
+        },
+        width: '100%',
+        zIndex: 2,
+        position: 'relative',
+        marginTop: '-49px',
+        backgroundColor: '#DCBC88',
+        height: '50px',
+    }
 }));
 
 export const Layout: React.FunctionComponent<MyProps> = (props: MyProps) => {
@@ -88,7 +103,9 @@ export const Layout: React.FunctionComponent<MyProps> = (props: MyProps) => {
                 </div>
                 </div>
                 </div>
-                <Container style={{ paddingLeft: 0, paddingRight: 0, zIndex: 2, position: 'relative', paddingBottom: '50px', maxWidth: '1200px' }}>
+                <div className={classes.magicBox}>
+                </div>
+                <Container style={{ paddingLeft: 0, paddingRight: 0, zIndex: 3, position: 'relative', paddingBottom: '50px', maxWidth: '1200px' }}>
                     <div>
                         {props.children}
                     </div>

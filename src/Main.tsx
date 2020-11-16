@@ -50,7 +50,7 @@ function Main() {
     <Layout>
       <LoadUserOnClientSide/>
       {!user && <Login />}
-      {user && info && <Infos setInfo={setInfo} teamName={team.name} categoryName={category.name} categoryEnd={category.ends_at} categoryStart={category.starts_at}/>}
+      {user && info && <Infos teamInProgress={exercise?.category_ord > 1} setInfo={setInfo} teamName={team.name} categoryName={category.name} categoryEnd={category.ends_at} categoryStart={category.starts_at}/>}
       {user && !info && <Excercise auth={authHeader} exercise={exercise} />}
     </Layout>
   );

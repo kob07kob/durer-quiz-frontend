@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
     padding: '30px 60px',
     borderRadius: '30px',
     color: theme.palette.secondary.contrastText,
-    marginTop: '-70px',
+    marginTop: '-120px',
     overflow: 'hidden',
     backgroundColor: '#fff',
     maxWidth: '700px',
@@ -28,6 +28,7 @@ const useStyles = makeStyles(theme => ({
   },
   formDiv: {
     width: 'calc(100% - 20px)',
+    minHeight: '320px',
     display: 'flex',
     marginLeft: '10px',
     flexFlow: 'column',
@@ -35,6 +36,10 @@ const useStyles = makeStyles(theme => ({
     flexWrap: 'wrap',
     alignItems: 'left',
     paddingBottom: '10px',
+  },
+  infoElement: {
+    fontSize: '15px',
+    marginBottom: '15px',
   },
   element: {
     width: '100%',
@@ -64,6 +69,7 @@ export interface Props{
   categoryStart: moment.Moment;
   categoryEnd: moment.Moment;
   setInfo: (val:boolean)=>any;
+  teamInProgress: boolean;
 }
 
 export const Infos = (props:Props) => {
@@ -73,13 +79,14 @@ let now = moment()
 let enabled = props.categoryStart && props.categoryEnd && props.categoryStart.isBefore(now) && props.categoryEnd.isAfter(now)
 
 return <div className={classes.root} style={{maxHeight: '400px'}}>
-  <div style={{position: "relative", zIndex: 2}}>
+  <div style={{position: "relative", zIndex: 2, minHeight: '320px'}}>
                   <div className={classes.formDiv}>
-                    <div>Csapatnév: {props.teamName}</div>
-                    <div>Kategória: {props.categoryName}</div>
-                    <div>Kitöltés kezdete: {props.categoryStart?.calendar()}</div>
-                    <div>Kitöltés vége: {props.categoryEnd?.calendar()}</div>
-                      <MyButton type='button' label="Kitöltés megkezdése" onClick={(event:any)=>{props.setInfo(false)}}
+                    <div className = {classes.infoElement}><b>Csapatnév:</b> {props.teamName}</div>
+                    <div className = {classes.infoElement}><b>Kategória:</b> {props.categoryName}</div>
+                    <div className = {classes.infoElement}><b>Kitöltés kezdete:</b> {props.categoryStart?.format("YYYY:MM:DD HH:mm")}</div>
+                    <div className = {classes.infoElement}><b>Kitöltés vége:</b> {props.categoryEnd?.format("YYYY:MM:DD HH:mm")}</div>
+                    <div style={{display: 'flex', flex: 1}}></div>
+                      <MyButton type='button' label={props.teamInProgress?"Kitöltés folytatása":"Kitöltés megkezdése"} onClick={(event:any)=>{props.setInfo(false)}}
                           className = {classes.element} disabled={!enabled}/>
                   <a className={classes.link} onClick={()=>{logout()}}>
                     Kijelentkezés
