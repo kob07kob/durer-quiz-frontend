@@ -65,6 +65,7 @@ const useStyles = makeStyles(theme => ({
 
 export const Login = () => {
 const [forgotPass, setForgotPass] = useState(0);
+const [loading, setLoading] = useState(false);
 const { enqueueSnackbar } = useSnackbar();
 const classes = useStyles();
 const login= useLogin();
@@ -75,10 +76,12 @@ return <div className={classes.root} style={{maxHeight: '400px'}}>
             .required('E-mail kitöltése kötelező'),
           })}
                   onSubmit={async (values) => {
+                    setLoading(true);
                     const res = await login(values.email, values.password);
                     if(res){
                       enqueueSnackbar(res, { variant: 'error' });
                     }
+                    setLoading(false);
                   }}>
                   <div className={classes.formDiv}>
                   <Field name="email"
@@ -95,7 +98,7 @@ return <div className={classes.root} style={{maxHeight: '400px'}}>
                          otherProps = {{labelWhere: LabelType.Above}}
                          className = {classes.element}
                   />
-                  <MyButton type="submit" label="Belépés" 
+                  <MyButton type="submit" label="Belépés" loading={loading}
                          className = {classes.element}/>
                   <a className={classes.link} onClick={()=>{setForgotPass(1)}}>
                     Elfelejtettem a jelszavam
@@ -108,13 +111,16 @@ return <div className={classes.root} style={{maxHeight: '400px'}}>
             .required('Email szükséges'),
           })}
                   onSubmit={async (values) => {
+                    setLoading(true);
                     const res = await sendEmail(values.email);
                     if(res){
                       enqueueSnackbar(res, { variant: 'error' });
                     }
                     else {
                       enqueueSnackbar("Az emailt sikeresen elküldtük!", { variant: 'success' });
+                      window.location.href = '/';
                     }
+                    setLoading(false);
                   }}>
                   <div className={classes.formDiv}>
                   <Field name="email"
@@ -124,7 +130,7 @@ return <div className={classes.root} style={{maxHeight: '400px'}}>
                          otherProps = {{labelWhere: LabelType.Above}}
                          className = {classes.element}
                   />
-                  <MyButton type="submit" label="Küldés" 
+                  <MyButton type="submit" label="Küldés" loading={loading}
                          className = {classes.element}/>
                   <a className={classes.link} onClick={()=>{setForgotPass(0)}}>
                     vissza a bejelentkezéshez

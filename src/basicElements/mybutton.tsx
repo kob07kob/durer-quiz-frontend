@@ -1,9 +1,10 @@
-import { Button, makeStyles } from "@material-ui/core";
+import { Button, makeStyles, CircularProgress } from "@material-ui/core";
 import React from "react";
 
 export interface MyProps{
     label: string;
     type: "button" | "reset" | "submit" | undefined;
+    loading?: boolean;
     className?: string;
     onClick?: (event:any)=>any;
     disabled?: boolean;
@@ -24,5 +25,7 @@ const useStyles = makeStyles(theme => ({
 
 export const MyButton: React.FunctionComponent<MyProps> = (props: MyProps) => {
     const classes = useStyles();
-    return <Button disabled={!!props.disabled} onClick={(event)=>{if(props.onClick) props.onClick(event)}} color='primary' className={`${classes.root} ${props.className}`} variant='contained' type={props.type}>{props.label}</Button>
+    return <Button disabled={!!props.disabled || props.loading} onClick={(event)=>{if(props.onClick) props.onClick(event)}}color='primary' className={`${classes.root} ${props.className}`} variant='contained' type={props.type}>
+        {props.loading ? <>{props.label}<CircularProgress size={30} style={{marginLeft: '20px'}}/></>  : props.label}
+    </Button>
 }

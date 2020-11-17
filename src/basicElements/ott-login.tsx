@@ -67,6 +67,7 @@ export interface Props{
 }
 
 export const OneTimeTokenLogin = (props: Props) => {
+const [loading, setLoading] = useState(false);
 const { enqueueSnackbar } = useSnackbar();
 const classes = useStyles();
 const login= useLoginOtt();
@@ -80,6 +81,7 @@ return <div className={classes.root} style={{maxHeight: '400px'}}>
             .required('E-mail kitöltése kötelező'),
           })}
                   onSubmit={async (values) => {
+                    setLoading(true);
                     const res = await login(values.email, props.token);
                     if(res){
                       enqueueSnackbar(res, { variant: 'error' });
@@ -88,6 +90,7 @@ return <div className={classes.root} style={{maxHeight: '400px'}}>
                       window.location.href = '/';
                       //await Router.push(`/`, undefined, { shallow: true });
                     }
+                    setLoading(true);
                   }}>
                   <div className={classes.formDiv}>
                   <Field name="email"
@@ -97,7 +100,7 @@ return <div className={classes.root} style={{maxHeight: '400px'}}>
                          otherProps = {{labelWhere: LabelType.Above}}
                          className = {classes.element}
                   />
-                  <MyButton type="submit" label="Belépés" 
+                  <MyButton type="submit" label="Belépés" loading={loading}
                          className = {classes.element}/>
                          <a className={classes.link} onClick={()=>{goToFront()}}>
                           vissza a bejelentkezéshez

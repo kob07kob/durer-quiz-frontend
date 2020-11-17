@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from '@material-ui/core';
 import { WebshopPicture } from "./picture-component";
 import { MyButton } from "./mybutton";
@@ -73,10 +73,25 @@ export interface Props{
 }
 
 export const Infos = (props:Props) => {
+  let now = moment();
+  let enabled = props.categoryStart && props.categoryEnd && props.categoryStart.isBefore(now) && props.categoryEnd.isAfter(now);
+  const [timerStarted, setTimerStarted] = useState(false);
+  const [enabledState, setEnabledState] = useState(enabled);
 const logout = useLogout();
 const classes = useStyles();
-let now = moment()
-let enabled = props.categoryStart && props.categoryEnd && props.categoryStart.isBefore(now) && props.categoryEnd.isAfter(now)
+const checkDeadlines = ()=> {
+  let now = moment();
+  let enabled2 = props.categoryStart && props.categoryEnd && props.categoryStart.isBefore(now) && props.categoryEnd.isAfter(now);
+  if(enabled2 !== enabledState ){
+    setEnabledState(enabled);
+  }
+}
+useEffect(()=>{
+  if(!timerStarted){
+    setInterval(checkDeadlines, 1000);
+    setTimerStarted(true);
+  }
+}, [])
 
 return <div className={classes.root} style={{maxHeight: '400px'}}>
   <div style={{position: "relative", zIndex: 2, minHeight: '320px'}}>

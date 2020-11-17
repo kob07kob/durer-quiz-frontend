@@ -45,6 +45,7 @@ const useStyles = makeStyles(theme => ({
 export const Excercise: React.FunctionComponent<MyProps> = (props: MyProps) => {
   const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState({
     sequence: props.exercise.sequence_number, points: props.exercise.max_points-props.exercise.sequence_number,
     order: props.exercise.category_ord, task: props.exercise.description,
@@ -65,6 +66,7 @@ export const Excercise: React.FunctionComponent<MyProps> = (props: MyProps) => {
       result: Yup.number().typeError('Számot kell írnod').min(1, 'A válasz 1 és 9999 között van').max(9999, 'A válasz 1 és 9999 között van').required('Nem írtál semmi választ!')
     })}
       onSubmit={async (values) => {
+        setLoading(true);
         const result = await fetch(`${serverUrl}/submit`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json', ...props.auth },
@@ -106,6 +108,7 @@ export const Excercise: React.FunctionComponent<MyProps> = (props: MyProps) => {
         }
         values.result = '';
         setRefresh(!refresh)
+        setLoading(false);
       }}>
       <div className={classes.formDiv}>
         <Field name="result"
@@ -116,7 +119,7 @@ export const Excercise: React.FunctionComponent<MyProps> = (props: MyProps) => {
           otherProps={{ labelWhere: LabelType.Inline }}
           className={classes.input}
         />
-        <MyButton type="submit" className={classes.input} label="Beküld" />
+        <MyButton type="submit" className={classes.input} label="Beküld" loading ={loading}/>
       </div>
     </Form>
   </MainBox>;
