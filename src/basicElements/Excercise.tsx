@@ -53,6 +53,7 @@ export const Excercise: React.FunctionComponent<MyProps> = (props: MyProps) => {
     exercise_uuid: props.exercise.uuid
   });
   const [refresh, setRefresh] = useState(false);
+  const [triesForTask, setTriesForTask] = useState([] as number[]);
 
   const completestring = `<latex-js hyphenate="false">${data.task}
 </latex-js>`;
@@ -63,10 +64,15 @@ export const Excercise: React.FunctionComponent<MyProps> = (props: MyProps) => {
     })}
     <Divider variant="middle" style={{ marginTop: '10px', marginBottom: '10px' }} />
     <Form initialValues={{ result: '' }} validationSchema={Yup.object().shape({
-      result: Yup.number().typeError('Számot kell írnod').min(1, 'A válasz 1 és 9999 között van').max(9999, 'A válasz 1 és 9999 között van').required('Nem írtál semmi választ!')
+      result: Yup.number().integer('Egész számot kell írni').typeError('Számot kell írnod').min(1, 'A válasz 1 és 9999 között van').max(9999, 'A válasz 1 és 9999 között van').required('Nem írtál semmi választ!')
     })}
       onSubmit={async (values) => {
         setLoading(true);
+        if(triesForTask.includes(values.result)){
+          enqueueSnackbar('Ezt a választ már próbáltátok', { variant: 'error' });
+          setLoading(false);
+          return;
+        }
         const result = await fetch(`${serverUrl}/submit`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json', ...props.auth },
@@ -86,8 +92,16 @@ export const Excercise: React.FunctionComponent<MyProps> = (props: MyProps) => {
         const next = await result.json();
         const exercise = next?.next;
         if(next?.submission?.guess_correct){
+          setTriesForTask([] as number[]);
           enqueueSnackbar('A válasz helyes volt', { variant: 'success' });
         }else{
+          if(exercise.sequence_number === data.sequence){
+            const tries = triesForTask;
+            tries.push(values.result);
+            setTriesForTask(tries);
+          } else {
+            setTriesForTask([] as number[]);
+          }
           enqueueSnackbar('A válasz nem volt jó', { variant: 'error' });
         }
         if(exercise?.title){
