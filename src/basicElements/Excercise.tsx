@@ -19,6 +19,7 @@ export interface MyProps {
   auth: { Authorization: string };
   endsAt: moment.Moment;
   teamName: string;
+  setInfo: (val:boolean)=>any;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -74,13 +75,13 @@ export const Excercise: React.FunctionComponent<MyProps> = (props: MyProps) => {
   const completestring = `<latex-js hyphenate="false">${data.task}
 </latex-js>`;
   if(!data.exercise_uuid){
-    return <ResultPage endsAt={props.endsAt} teamName={props.teamName}/>;
+    return <ResultPage endsAt={props.endsAt} teamName={props.teamName} setInfo={props.setInfo}/>;
   }
   //const timeLeftString = props.endsAt.diff(moment.now(), "seconds");
   return <MainBox mainTitle={`${data.order + 1}.feladat: ${data.title} ${props.endsAt.isAfter(moment.now())?`Hátralévő idő: ${timeLeftString}`:'Lejárt az idő'}`} subTitle={`${data.sequence + 1}. próba, ${data.points} pontért`}>
     <div dangerouslySetInnerHTML={{ __html: completestring }} />
     {data.attachments?.map(element => {
-      return <img src={element.uri} style={{maxWidth:'80%', display: 'flex', marginLeft:'auto', marginRight: 'auto'}}/>;
+      return <img src={element.uri} style={{maxWidth:'80%', display: 'flex', marginLeft:'auto', marginRight: 'auto'}} alt={'feladatKép (ha nem töltött be próbáld frissíteni az oldalt)'}/>;
     })}
     <Divider variant="middle" style={{ marginTop: '10px', marginBottom: '10px' }} />
     <Form initialValues={{ result: '' }} validationSchema={Yup.object().shape({
@@ -122,7 +123,7 @@ export const Excercise: React.FunctionComponent<MyProps> = (props: MyProps) => {
           } else {
             setTriesForTask([] as number[]);
           }
-          enqueueSnackbar('A válasz nem volt jó', { variant: 'error' });
+          enqueueSnackbar('A válasz sajnos nem volt jó', { variant: 'error' });
         }
         if(exercise?.title){
           setData({
