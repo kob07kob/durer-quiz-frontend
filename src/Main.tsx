@@ -13,6 +13,7 @@ import { OneTimeTokenLogin } from './basicElements/ott-login';
 import { 
   useLocation,
 } from "react-router-dom";
+import moment from 'moment';
 
 function Main() {
   const [info, setInfo] = useState(true);
@@ -50,8 +51,8 @@ function Main() {
     <Layout>
       <LoadUserOnClientSide/>
       {!user && <Login />}
-      {user && info && <Infos teamInProgress={exercise?.category_ord > 1} setInfo={setInfo} teamName={team.name} categoryName={category.name} categoryEnd={category.ends_at} categoryStart={category.starts_at}/>}
-      {user && !info && <Excercise auth={authHeader} exercise={exercise} />}
+      {user && info && <Infos teamFinished={!exercise.uuid && category.starts_at?.isBefore(moment.now())} teamInProgress={exercise?.category_ord > 1} setInfo={setInfo} teamName={team.name} categoryName={category.name} categoryEnd={category.ends_at} categoryStart={category.starts_at}/>}
+      {user && !info && <Excercise auth={authHeader} exercise={exercise} endsAt={category?.ends_at} teamName={team.name}/>}
     </Layout>
   );
 }

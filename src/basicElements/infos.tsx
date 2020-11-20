@@ -4,6 +4,7 @@ import { WebshopPicture } from "./picture-component";
 import { MyButton } from "./mybutton";
 import moment from 'moment';
 import { useLogout } from "./user-hooks/user-hooks";
+import { EndOfLineState } from "typescript";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -70,6 +71,7 @@ export interface Props{
   categoryEnd: moment.Moment;
   setInfo: (val:boolean)=>any;
   teamInProgress: boolean;
+  teamFinished: boolean;
 }
 
 export const Infos = (props:Props) => {
@@ -79,19 +81,19 @@ export const Infos = (props:Props) => {
   const [enabledState, setEnabledState] = useState(enabled);
 const logout = useLogout();
 const classes = useStyles();
-const checkDeadlines = ()=> {
+const checkDeadlines = (start:moment.Moment, end: moment.Moment)=> {
   let now = moment();
-  let enabled2 = props.categoryStart && props.categoryEnd && props.categoryStart.isBefore(now) && props.categoryEnd.isAfter(now);
+  let enabled2 = start?.isBefore(now) && end?.isAfter(now);
   if(enabled2 !== enabledState ){
-    setEnabledState(enabled);
+    setEnabledState(enabled2);
   }
 }
 useEffect(()=>{
-  if(!timerStarted){
-    setInterval(checkDeadlines, 1000);
+  if(!timerStarted && props.categoryStart){
+    setInterval(checkDeadlines, 1000,props.categoryStart, props.categoryEnd);
     setTimerStarted(true);
   }
-}, [])
+}, [props.categoryStart])
 
 return <div className={classes.root} style={{maxHeight: '400px'}}>
   <div style={{position: "relative", zIndex: 2, minHeight: '320px'}}>
@@ -101,8 +103,8 @@ return <div className={classes.root} style={{maxHeight: '400px'}}>
                     <div className = {classes.infoElement}><b>Kitöltés kezdete:</b> {props.categoryStart?.format("YYYY:MM:DD HH:mm")}</div>
                     <div className = {classes.infoElement}><b>Kitöltés vége:</b> {props.categoryEnd?.format("YYYY:MM:DD HH:mm")}</div>
                     <div style={{display: 'flex', flex: 1}}></div>
-                      <MyButton type='button' label={props.teamInProgress?"Kitöltés folytatása":"Kitöltés megkezdése"} onClick={(event:any)=>{props.setInfo(false)}}
-                          className = {classes.element} disabled={!enabled}/>
+                      <MyButton type='button' label={props.teamInProgress?"Kitöltés folytatása":(props.teamFinished?"Eredmények megtekintése":"Kitöltés megkezdése")} onClick={(event:any)=>{props.setInfo(false)}}
+                          className = {classes.element} disabled={!enabledState && !props.teamFinished}/>
                   <a className={classes.link} onClick={()=>{logout()}}>
                     Kijelentkezés
                   </a>

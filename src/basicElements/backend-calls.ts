@@ -1,5 +1,5 @@
 import { serverUrl } from "../constants";
-import { Category, Exercise, Team } from "./backend-types"
+import { Category, Exercise, Submission, Team } from "./backend-types"
 import { useAuthHeader } from "./user-hooks/user-hooks";
 import moment from "moment"
 
@@ -19,6 +19,14 @@ export async function getCurrentExercise(auth: { Authorization: string }): Promi
 }
 export async function getTeam(auth: { Authorization: string }): Promise<Team | null> {
     const result = await fetch(`${serverUrl}/team/my`, {
+        method: 'GET',
+        headers: { ...auth },
+    });
+    if (!result.ok) return null;
+    return await result.json();
+}
+export async function getSubmissions(auth: { Authorization: string }): Promise<Submission[] | null> {
+    const result = await fetch(`${serverUrl}/team/my/submissions`, {
         method: 'GET',
         headers: { ...auth },
     });

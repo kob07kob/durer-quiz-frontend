@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MainBox } from "./main-box";
 //import Latex from 'react-latex-next';
 import { Divider, makeStyles } from '@material-ui/core';
@@ -10,11 +10,15 @@ import { MyButton } from "./mybutton";
 import { Exercise, Submission } from "./backend-types";
 import { serverUrl } from "../constants";
 import { useSnackbar } from "notistack";
+import { ResultPage } from "./result-page";
+import moment from "moment";
 
 
 export interface MyProps {
   exercise: Exercise;
   auth: { Authorization: string };
+  endsAt: moment.Moment;
+  teamName: string;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -53,13 +57,29 @@ export const Excercise: React.FunctionComponent<MyProps> = (props: MyProps) => {
     exercise_uuid: props.exercise.uuid
   });
   const [refresh, setRefresh] = useState(false);
+  const [timeLeftString, setTimeLeftString] = useState('');
+  const [timerStarted, setTimerStarted] = useState(false);
   const [triesForTask, setTriesForTask] = useState([] as number[]);
 
+  const counter = (end:moment.Moment)=> {
+    const secs = end.diff(moment.now(), "seconds")
+    setTimeLeftString(`${Math.floor(secs/60)} : ${secs%60}`);
+  }
+  useEffect(()=>{
+    if(!timerStarted&&props.endsAt){
+      setInterval(counter, 1000, props.endsAt);
+      setTimerStarted(true);
+    }
+  }, [props.endsAt])
   const completestring = `<latex-js hyphenate="false">${data.task}
 </latex-js>`;
-  return <MainBox mainTitle={`${data.order + 1}.feladat: ${data.title}`} subTitle={`${data.sequence + 1}. próba, ${data.points} pontért`}>
+  if(!data.exercise_uuid){
+    return <ResultPage endsAt={props.endsAt} teamName={props.teamName}/>;
+  }
+  //const timeLeftString = props.endsAt.diff(moment.now(), "seconds");
+  return <MainBox mainTitle={`${data.order + 1}.feladat: ${data.title} ${props.endsAt.isAfter(moment.now())?`Hátralévő idő: ${timeLeftString}`:'Lejárt az idő'}`} subTitle={`${data.sequence + 1}. próba, ${data.points} pontért`}>
     <div dangerouslySetInnerHTML={{ __html: completestring }} />
-    {data.attachments.map(element => {
+    {data.attachments?.map(element => {
       return <img src={element.uri} style={{maxWidth:'80%', display: 'flex', marginLeft:'auto', marginRight: 'auto'}}/>;
     })}
     <Divider variant="middle" style={{ marginTop: '10px', marginBottom: '10px' }} />
@@ -95,7 +115,7 @@ export const Excercise: React.FunctionComponent<MyProps> = (props: MyProps) => {
           setTriesForTask([] as number[]);
           enqueueSnackbar('A válasz helyes volt', { variant: 'success' });
         }else{
-          if(exercise.sequence_number === data.sequence){
+          if(exercise?.uuid === data.exercise_uuid){
             const tries = triesForTask;
             tries.push(values.result);
             setTriesForTask(tries);
@@ -117,7 +137,7 @@ export const Excercise: React.FunctionComponent<MyProps> = (props: MyProps) => {
             sequence: 0, points: 0,
             order: 0, task: `Végig értetek a feladatokon`,
             attachments: [], title: '',
-            exercise_uuid: 'asdas'
+            exercise_uuid: ''
           })
         }
         values.result = '';

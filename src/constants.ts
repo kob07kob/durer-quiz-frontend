@@ -1,1 +1,1 @@
-export const serverUrl = 'https://valto.durerinfo.hu/api/v1';
+export const serverUrl = 'https://verseny.durerinfo.hu/api/v1';
