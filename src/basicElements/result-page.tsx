@@ -101,6 +101,11 @@ const useStyles = makeStyles(theme => ({
         ['& span']: {
             marginRight: '25px'
         }
+    },
+    tableContainer:{
+        display: 'flex',
+        flexFlow: 'column',
+        alignItems: 'center',
     }
 }));
 export interface Props {
@@ -147,6 +152,7 @@ export const ResultPage:React.FunctionComponent<Props> = (props:Props) => {
     }, [])
     return <MainBox mainTitle={'Eredmények'} subTitle={props.teamName}>
         <div className={classes.grat}>Gratulálunk a verseny befejezéséhez</div>
+        <div className={classes.tableContainer}>
         <table className={classes.table}>
             <tr>
                 <td>Feladat</td>
@@ -185,6 +191,7 @@ export const ResultPage:React.FunctionComponent<Props> = (props:Props) => {
             <span>3. próbálkozás</span>
             <div className={classes.errortry}></div>
             <span>hibás válasz</span>
+        </div>
         </div>
         <div className={classes.sum}>
              Összpontszám: {sum}
