@@ -25,6 +25,10 @@ const useStyles = makeStyles(theme => ({
             display: 'block',
         }
     },
+    redInfoBig:{
+        color: '#d50000',
+        fontSize: '14px',
+    },
     grat: {
         fontSize: '18px',
         fontWeight: 'bold',
@@ -133,7 +137,9 @@ export const ResultPage:React.FunctionComponent<Props> = (props:Props) => {
     const table:{point:number, submitted_at: string, lastTry: number}[] = [];
     let sum = 0;
     subMap.forEach(data=>{
-        sum += data.point;
+        if(moment(data.submitted_at).isBefore(props.endsAt)){
+            sum += data.point;
+        }
         table.push(data);
     });
     table.sort((a,b)=>{
@@ -195,6 +201,9 @@ export const ResultPage:React.FunctionComponent<Props> = (props:Props) => {
         </div>
         <div className={classes.sum}>
              Összpontszám: {sum}
+        </div>
+        <div className={classes.redInfoBig}>
+             Ez előzetes eredmény, a szervezők még mindent le fognak ellenőrizni és előfordulhat, hogy változik (bármelyik irányba). 
         </div>
         <div className={classes.buttonContainer}>
             <MyButton className={classes.button} type='button' label={'Szuper!'}  onClick={()=>{props.setInfo(true)}}/>
