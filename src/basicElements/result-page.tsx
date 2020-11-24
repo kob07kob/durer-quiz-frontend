@@ -28,6 +28,7 @@ const useStyles = makeStyles(theme => ({
     redInfoBig:{
         color: '#d50000',
         fontSize: '14px',
+        marginLeft: '55px',
     },
     grat: {
         fontSize: '18px',
@@ -203,7 +204,7 @@ export const ResultPage:React.FunctionComponent<Props> = (props:Props) => {
              Összpontszám: {sum}
         </div>
         <div className={classes.redInfoBig}>
-             Ez előzetes eredmény, a szervezők még mindent le fognak ellenőrizni és előfordulhat, hogy változik (bármelyik irányba). 
+             Ez egy előzetes eredmény, a még le fogjuk ellenőrizni a válaszaitokat, és előfordulhat, hogy változik a pontszám (bármelyik irányba). 
         </div>
         <div className={classes.buttonContainer}>
             <MyButton className={classes.button} type='button' label={'Szuper!'}  onClick={()=>{props.setInfo(true)}}/>
