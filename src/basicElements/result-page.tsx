@@ -138,7 +138,7 @@ export const ResultPage:React.FunctionComponent<Props> = (props:Props) => {
     });
     table.sort((a,b)=>{
         if(moment(a.submitted_at).isAfter(moment(b.submitted_at))) return 1;
-        return 0;
+        return -1;
     });
     const auth = useAuthHeader();
     useEffect(()=>{

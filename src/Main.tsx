@@ -51,7 +51,7 @@ function Main() {
     <Layout>
       <LoadUserOnClientSide/>
       {!user && <Login />}
-      {user && info && <Infos teamFinished={!exercise.uuid && category.starts_at?.isBefore(moment.now())} teamInProgress={exercise?.category_ord > 1} setInfo={setInfo} teamName={team.name} categoryName={category.name} categoryEnd={category.ends_at} categoryStart={category.starts_at}/>}
+      {user && info && <Infos teamFinished={!exercise.uuid && category.starts_at?.isBefore(moment.now())} teamInProgress={exercise?.category_ord > 0} setInfo={setInfo} teamName={team.name} categoryName={category.name} categoryEnd={category.ends_at} categoryStart={category.starts_at}/>}
       {user && !info && <Excercise auth={authHeader} exercise={exercise} endsAt={category?.ends_at} teamName={team.name} setInfo={setInfo}/>}
     </Layout>
   );
