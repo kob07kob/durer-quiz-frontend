@@ -206,7 +206,7 @@ export const ResultPage:React.FunctionComponent<Props> = (props:Props) => {
              Ez előzetes eredmény, a szervezők még mindent le fognak ellenőrizni és előfordulhat, hogy változik (bármelyik irányba). 
         </div>
         <div className={classes.buttonContainer}>
-            <MyButton className={classes.button} type='button' label={'Szuper!'}  onClick={()=>{props.setInfo(true)}}/>
+            <MyButton className={classes.button} type='button' label={'Szuper!'}  onClick={()=>{window.location.href = '/';}}/>
         </div>
         <div className={classes.empty}>
         </div>

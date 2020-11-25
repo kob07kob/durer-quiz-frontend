@@ -3,8 +3,10 @@ import { makeStyles } from '@material-ui/core';
 import { WebshopPicture } from "./picture-component";
 import { MyButton } from "./mybutton";
 import moment from 'moment';
-import { useLogout } from "./user-hooks/user-hooks";
+import { useAuthHeader, useLogout } from "./user-hooks/user-hooks";
 import { EndOfLineState } from "typescript";
+import { Exercise } from "./backend-types";
+import { getCurrentExercise } from "./backend-calls";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -72,23 +74,38 @@ export interface Props{
   setInfo: (val:boolean)=>any;
   teamInProgress: boolean;
   teamFinished: boolean;
+  exercise:Exercise;
+  setExercise: (val:Exercise)=>any;
 }
 
 export const Infos = (props:Props) => {
-  let now = moment();
-  let enabled = props.categoryStart && props.categoryEnd && props.categoryStart.isBefore(now) && props.categoryEnd.isAfter(now);
+  const authHeader = useAuthHeader();
   const [timerStarted, setTimerStarted] = useState(false);
-  const [enabledState, setEnabledState] = useState(enabled);
-const logout = useLogout();
-const classes = useStyles();
-const checkDeadlines = (start:moment.Moment, end: moment.Moment)=> {
+  const [enabledState, setEnabledState] = useState(false);
+  const logout = useLogout();
+  const classes = useStyles();
+  const checkDeadlines = (start:moment.Moment, end: moment.Moment)=> {
   let now = moment();
   let enabled2 = start?.isBefore(now) && end?.isAfter(now);
   if(enabled2 !== enabledState ){
-    setEnabledState(enabled2);
-  }
+    console.log('ratatata');
+    if(enabled2){
+      console.log('insidejoke');
+      getCurrentExercise(authHeader).then(exc => {
+        if(exc!==null){
+          props.setExercise(exc);
+        } else {
+          props.setExercise({} as Exercise)
+        }
+        setEnabledState(enabled2);
+      });
+    } else{
+      setEnabledState(enabled2);
+    }
+  } 
 }
 useEffect(()=>{
+  props.setExercise({}as Exercise);
   if(!timerStarted && props.categoryStart){
     setInterval(checkDeadlines, 1000,props.categoryStart, props.categoryEnd);
     setTimerStarted(true);

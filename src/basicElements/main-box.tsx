@@ -4,6 +4,7 @@ import React from "react";
 export interface MyProps extends React.HTMLProps<any> {
     mainTitle: string;
     subTitle?: string;
+    rightTitle?: string;
 }
 
 
@@ -35,6 +36,9 @@ const useStyles = makeStyles(theme => ({
     },
     subTitle: {
         fontSize: '20px',
+    },
+    rightTitle: {
+        float: 'right',
     }
 }));
 
@@ -43,7 +47,12 @@ export const MainBox: React.FunctionComponent<MyProps> = (props: MyProps) => {
 
     return <div className={classes.root}>
             <div className={classes.header}>
-                <div className={classes.mainTitle}>{props.mainTitle}</div>
+                <div className={classes.mainTitle}>
+                    {props.mainTitle}
+                    <span className={classes.rightTitle}>
+                        {props.rightTitle}
+                    </span>
+                </div>
                 <div className={classes.subTitle}>{props.subTitle}</div>
             </div>
             <div className={classes.contentDiv}>

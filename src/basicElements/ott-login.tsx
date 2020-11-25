@@ -90,7 +90,7 @@ return <div className={classes.root} style={{maxHeight: '400px'}}>
                       window.location.href = '/';
                       //await Router.push(`/`, undefined, { shallow: true });
                     }
-                    setLoading(true);
+                    setLoading(false);
                   }}>
                   <div className={classes.formDiv}>
                   <Field name="email"

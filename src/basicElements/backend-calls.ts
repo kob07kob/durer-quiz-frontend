@@ -18,29 +18,44 @@ export async function getCurrentExercise(auth: { Authorization: string }): Promi
     }
 }
 export async function getTeam(auth: { Authorization: string }): Promise<Team | null> {
-    const result = await fetch(`${serverUrl}/team/my`, {
-        method: 'GET',
-        headers: { ...auth },
-    });
-    if (!result.ok) return null;
-    return await result.json();
+    try {
+        const result = await fetch(`${serverUrl}/team/my`, {
+            method: 'GET',
+            headers: { ...auth },
+        });
+        if (!result.ok) return null;
+        return await result.json();
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
 }
 export async function getSubmissions(auth: { Authorization: string }): Promise<Submission[] | null> {
-    const result = await fetch(`${serverUrl}/team/my/submissions`, {
-        method: 'GET',
-        headers: { ...auth },
-    });
-    if (!result.ok) return null;
-    return await result.json();
+    try {
+        const result = await fetch(`${serverUrl}/team/my/submissions`, {
+            method: 'GET',
+            headers: { ...auth },
+        });
+        if (!result.ok) return null;
+        return await result.json();
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
 }
 export async function getCategory(auth: { Authorization: string }, uuid: string): Promise<Category | null> {
-    const result = await fetch(`${serverUrl}/category/${uuid}`, {
-        method: 'GET',
-        headers: { ...auth },
-    });
-    if (!result.ok) return null;
-    let raw_obj = await result.json();
-    return {'starts_at': moment(raw_obj.starts_at), 'ends_at': moment(raw_obj.ends_at), 'uuid': raw_obj.category, 'name': raw_obj.name}
+    try {
+        const result = await fetch(`${serverUrl}/category/${uuid}`, {
+            method: 'GET',
+            headers: { ...auth },
+        });
+        if (!result.ok) return null;
+        let raw_obj = await result.json();
+        return {'starts_at': moment(raw_obj.starts_at), 'ends_at': moment(raw_obj.ends_at), 'uuid': raw_obj.category, 'name': raw_obj.name}
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
 }
 export async function sendEmail(email:string): Promise<string>{
     try {
