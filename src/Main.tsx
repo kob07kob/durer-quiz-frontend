@@ -16,9 +16,9 @@ import {
 import moment from 'moment';
 
 function Main() {
-  const [info, setInfo] = useState(true);
+  const [info, setInfo] = useState(false);
   const [team, setTeam] = useState({ uuid: '', email: '', name: '' } as Team);
-  const [exercise, setExercise] = useState({} as Exercise);
+  const [exercise, setExercise] = useState({uuid: 'dsaads', sequence_number: 0, category_ord: 0, category_uuid: '', description:'dasdads asdads', title:'dasasd', max_points: 3} as Exercise);
   const [category, setCategory] = useState({} as Category);
   const tokenGetter= new URLSearchParams(useLocation().search);
   const token = tokenGetter.get("one-time-auth")

@@ -25,7 +25,7 @@ export interface MyProps {
 const useStyles = makeStyles(theme => ({
   formDiv: {
     display: 'flex',
-    maxWidth: '700px',
+    maxWidth: 'fit-content',
     marginLeft: 'auto',
     marginRight: 'auto',
     flexWrap: 'wrap',
@@ -45,15 +45,20 @@ const useStyles = makeStyles(theme => ({
     }
   },
   input: {
-    width: '50%',
-    [theme.breakpoints.down(650)]: {
+    width: '300px',
+    [theme.breakpoints.down(1000)]: {
       marginBottom: '15px',
       width: '100%',
     }
   },
   endButon:{
-    width: '100%',
-    marginTop: '15px',
+    width: '300px',
+    marginLeft: '15px',
+    [theme.breakpoints.down(1000)]: {
+      marginBottom: '15px',
+      width: '100%',
+      marginLeft: '0px',
+    }
   },
   button: {
     width: '50%',
@@ -180,10 +185,10 @@ export const Excercise: React.FunctionComponent<MyProps> = (props: MyProps) => {
           className={classes.input}
         />
         <MyButton type="submit" className={classes.input} label="Beküld" loading ={loading}/>
+        { endOn && 
+          <MyButton type="button" className={classes.endButon} label="Befejezés" onClick={()=>{window.location.href = '/';}} color='#E3998A'/>
+        }
       </div>
-      { endOn && <div className={classes.endDiv}>
-        <MyButton type="button" className={classes.endButon} label="Befejezés" onClick={()=>{window.location.href = '/';}}/>
-      </div>}
     </Form>
   </MainBox>;
 }
