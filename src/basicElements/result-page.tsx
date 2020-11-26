@@ -204,7 +204,7 @@ export const ResultPage:React.FunctionComponent<Props> = (props:Props) => {
              Összpontszám: {sum}
         </div>
         <div className={classes.redInfoBig}>
-             Ez egy előzetes eredmény, a még le fogjuk ellenőrizni a válaszaitokat, és előfordulhat, hogy változik a pontszám (bármelyik irányba). 
+             Ez egy előzetes eredmény, még le fogjuk ellenőrizni a válaszaitokat, és előfordulhat, hogy változik a pontszám (bármelyik irányba). 
         </div>
         <div className={classes.buttonContainer}>
             <MyButton className={classes.button} type='button' label={'Szuper!'}  onClick={()=>{window.location.href = '/';}}/>
