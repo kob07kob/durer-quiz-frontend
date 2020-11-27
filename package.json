@@ -24,6 +24,7 @@
     "react-latex-next": "^1.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",
+    "react-ga":"3.3.0",
     "recoil": "^0.1.1",
     "save-dev": "^0.0.1-security",
     "typescript": "^4.0.5",

@@ -14,8 +14,13 @@ import {
   useLocation,
 } from "react-router-dom";
 import moment from 'moment';
+import ReactGA from 'react-ga';
+
 
 function Main() {
+  //spyware
+  ReactGA.initialize('G-SZ3DY6CGPS');
+  ReactGA.pageview('test');
   const [info, setInfo] = useState(true);
   const [team, setTeam] = useState({ uuid: '', email: '', name: '' } as Team);
   const [exercise, setExercise] = useState({} as Exercise);
