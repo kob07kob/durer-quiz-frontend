@@ -84,30 +84,34 @@ export const Infos = (props:Props) => {
   const [enabledState, setEnabledState] = useState(false);
   const logout = useLogout();
   const classes = useStyles();
-  const checkDeadlines = (start:moment.Moment, end: moment.Moment)=> {
-  let now = moment();
-  let enabled2 = start?.isBefore(now) && end?.isAfter(now);
-  if(enabled2 !== enabledState ){
-    console.log('ratatata');
-    if(enabled2){
-      console.log('insidejoke');
-      getCurrentExercise(authHeader).then(exc => {
-        if(exc!==null){
-          props.setExercise(exc);
-        } else {
-          props.setExercise({} as Exercise)
-        }
-        setEnabledState(enabled2);
-      });
-    } else{
-      setEnabledState(enabled2);
-    }
-  } 
-}
 useEffect(()=>{
   props.setExercise({}as Exercise);
   if(!timerStarted && props.categoryStart){
-    setInterval(checkDeadlines, 1000,props.categoryStart, props.categoryEnd);
+    const timerFunc = setInterval(function (start:moment.Moment, end: moment.Moment) {
+      let now = moment();
+      let enabled2 = start?.isBefore(now) && end?.isAfter(now);
+      if(enabled2 !== enabledState ){
+        console.log('ratatata');
+        if(enabled2){
+          console.log('insidejoke');
+          getCurrentExercise(authHeader).then(exc => {
+            if(exc!==null){
+              props.setExercise(exc);
+            } else {
+              props.setExercise({} as Exercise)
+            }
+            setEnabledState(enabled2);
+            clearInterval(timerFunc);
+          }).catch(e=>{
+            props.setExercise({} as Exercise)
+            setEnabledState(enabled2);
+            clearInterval(timerFunc);
+          });
+        } else{
+          setEnabledState(enabled2);
+        }
+      } 
+    }, 1000,props.categoryStart, props.categoryEnd);
     setTimerStarted(true);
   }
 }, [props.categoryStart])
