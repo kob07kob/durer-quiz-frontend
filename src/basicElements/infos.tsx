@@ -120,7 +120,7 @@ return <div className={classes.root} style={{maxHeight: '400px'}}>
                     <div className = {classes.infoElement}><b>Kitöltés kezdete:</b> {props.categoryStart?.format("YYYY:MM:DD HH:mm")}</div>
                     <div className = {classes.infoElement}><b>Kitöltés vége:</b> {props.categoryEnd?.format("YYYY:MM:DD HH:mm")}</div>
                     <div style={{display: 'flex', flex: 1}}></div>
-                      <MyButton type='button' label={props.teamInProgress?"Kitöltés folytatása":(props.teamFinished?"Eredmények megtekintése":"Kitöltés megkezdése")} onClick={(event:any)=>{props.setInfo(false)}}
+                      <MyButton type='button' label={props.teamInProgress?"Kitöltés folytatása":(!!props.exercise?.uuid?"Kitöltés megkezdése":"Eredmények megtekintése")} onClick={(event:any)=>{props.setInfo(false)}}
                           className = {classes.element} disabled={!enabledState && !props.teamFinished}/>
                   <a className={classes.link} onClick={()=>{logout()}}>
                     Kijelentkezés

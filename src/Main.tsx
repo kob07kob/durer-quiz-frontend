@@ -14,6 +14,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import moment from 'moment';
+import GoogleAnalytics from './basicElements/googleanalitics';
 
 function Main() {
   const [info, setInfo] = useState(true);
@@ -49,6 +50,7 @@ function Main() {
   }
   return (
     <Layout>
+      <GoogleAnalytics identifier={'G-SZ3DY6CGPS'}/>
       <LoadUserOnClientSide/>
       {!user && <Login />}
       {user && info && <Infos exercise={exercise} setExercise={setExercise} teamFinished={category.starts_at?.isBefore(moment.now())} teamInProgress={exercise?.category_ord > 0} setInfo={setInfo} teamName={team.name} categoryName={category.name} categoryEnd={category.ends_at} categoryStart={category.starts_at}/>}
