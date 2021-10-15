@@ -15,10 +15,12 @@ import {
 } from "react-router-dom";
 import moment from 'moment';
 import GoogleAnalytics from './basicElements/googleanalitics';
+import { testModeAPI } from 'react-ga';
+import { Splash } from './basicElements/splash';
 
 function Main() {
   const [info, setInfo] = useState(true);
-  const [team, setTeam] = useState({ uuid: '', email: '', name: '' } as Team);
+  const [team, setTeam] = useState({ uuid: '', email: '', name: ''} as Team);
   const [exercise, setExercise] = useState({} as Exercise); //{uuid: 'dsaads', sequence_number: 0, category_ord: 0, category_uuid: '', description:'dasdads asdads', title:'dasasd', max_points: 3}
   const [category, setCategory] = useState({} as Category);
   const tokenGetter= new URLSearchParams(useLocation().search);
@@ -53,10 +55,28 @@ function Main() {
       <GoogleAnalytics identifier={'G-SZ3DY6CGPS'}/>
       <LoadUserOnClientSide/>
       {!user && <Login />}
-      {user && info && <Infos exercise={exercise} setExercise={setExercise} teamFinished={category.starts_at?.isBefore(moment.now())} teamInProgress={exercise?.category_ord > 0} setInfo={setInfo} teamName={team.name} categoryName={category.name} categoryEnd={category.ends_at} categoryStart={category.starts_at}/>}
-      {user && !info && <Excercise auth={authHeader} exercise={exercise} endsAt={category?.ends_at} teamName={team.name} setInfo={setInfo}/>}
+      /*TODO add user state management logic as separated function
+        current logic is flawed, as it wont let you return to the splash screen*/
+      {user &&  info && (!team.starts_at || !team.ends_at) && <Login/>}//splach screen
+      {user &&  info &&   team.starts_at &&  team.ends_at  && <Infos exercise={exercise} setExercise={setExercise} teamFinished={team.starts_at?.isBefore(moment.now())} teamInProgress={exercise?.category_ord > 0} setInfo={setInfo} teamName={team.name} categoryName={category.name} categoryEnd={team.ends_at} categoryStart={team.starts_at}/>}
+      {user && !info &&   team.starts_at &&  team.ends_at  && <Excercise auth={authHeader} exercise={exercise} endsAt={team?.ends_at} teamName={team.name} setInfo={setInfo}/>}
     </Layout>
   );
+}
+
+function pseudo_statemachine(t = moment.now()){
+  let user,team:Team;
+  if(!user) Login
+  else{
+    if (team?.starts_at === null)
+      Splash; // (two selection: váltó / stratégiás -> redirects to a different page, which again redirects)
+    else if(team?.begins_at.isAfter(t))
+      Infos
+    else if(team?.ends_at.isAfter(t))
+      Excercise
+    else
+      Infos
+  }
 }
 
 export default Main;

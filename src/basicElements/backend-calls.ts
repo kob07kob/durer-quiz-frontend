@@ -51,7 +51,7 @@ export async function getCategory(auth: { Authorization: string }, uuid: string)
         });
         if (!result.ok) return null;
         let raw_obj = await result.json();
-        return {'starts_at': moment(raw_obj.starts_at), 'ends_at': moment(raw_obj.ends_at), 'uuid': raw_obj.category, 'name': raw_obj.name}
+        return {'global_starts_at': moment(raw_obj.global_starts_at), 'global_ends_at': moment(raw_obj.global_ends_at), 'uuid': raw_obj.category, 'name': raw_obj.name}
     } catch (error) {
         console.log(error);
         return null;
@@ -69,6 +69,24 @@ export async function sendEmail(email:string): Promise<string>{
         if(result.ok) return "";
         if(result.status === 420) return 'Túl sok próbálkozás!';
         if(result.status === 403) return 'Tiltott művelet!'
+        else return 'A backenden még nem él az url';
+    } catch(e:any ){
+        console.log(e);
+        return 'Nem sikerült csatlakozni a szerverhez';
+    }
+
+}
+
+/*TODO use error hints from return body*/
+export async function startGame(): Promise<string>{
+    try {
+        const result = await fetch(`${serverUrl}/login/team/start`, {
+            method: 'POST', 
+            headers: { 'Content-Type': 'application/json' },
+        });
+        if(result.status === 204) return "";
+        if(result.status === 409) return 'Already started game.';
+        if(result.status === 401) return  'Unathorized api call.';/*result.body['hint']*/
         else return 'A backenden még nem él az url';
     } catch(e:any ){
         console.log(e);
