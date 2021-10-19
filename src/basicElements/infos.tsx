@@ -69,8 +69,8 @@ const useStyles = makeStyles(theme => ({
 export interface Props{
   teamName:string;
   categoryName: string;
-  categoryStart: moment.Moment;
-  categoryEnd: moment.Moment;
+  categoryStart: moment.Moment | null;
+  categoryEnd: moment.Moment | null;
   setInfo: (val:boolean)=>any;
   teamInProgress: boolean;
   teamFinished: boolean;

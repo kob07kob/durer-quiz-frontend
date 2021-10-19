@@ -114,7 +114,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 export interface Props {
-    endsAt: moment.Moment;
+    endsAt: moment.Moment | null;
     teamName: string;
     setInfo: (val:boolean)=>any;
 }
