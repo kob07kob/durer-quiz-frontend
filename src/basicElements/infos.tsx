@@ -131,6 +131,6 @@ return <div className={classes.root} style={{maxHeight: '400px'}}>
                   </a>
                   </div>
                 </div>
-          <WebshopPicture className={classes.picture} picture={{webPUrl: '/logo.svg', jpegOrPngUrl: '/logo_kicsik_nagyok.png', alt: 'login', title: 'login'}}/>
+          <WebshopPicture className={classes.picture} picture={{webPUrl: '/logo.svg', jpegOrPngUrl: '/logo.svg', alt: 'login', title: 'login'}}/>
       </div>;
 }
