@@ -80,7 +80,7 @@ const useStyles = makeStyles((theme: any) => ({
         zIndex: 2,
         position: 'relative',
         marginTop: '-49px',
-        backgroundColor: '#DCBC88',
+        backgroundColor: theme.palette.background,
         height: '50px',
     }
 }));

@@ -116,6 +116,6 @@ const useStyles = makeStyles(theme => ({
                 <MyButton type="button" label={relayFinished?"A váltó már nem elérhető":"Váltó"} loading={loading}
                         className = {classes.element} onClick={startValto} disabled={relayFinished}/>
             </div>}
-            <WebshopPicture className={classes.picture} picture={{webPUrl: '/logo_kicsik_nagyok.png', jpegOrPngUrl: '/logo_kicsik_nagyok.png', alt: 'login', title: 'login'}}/>
+            <WebshopPicture className={classes.picture} picture={{webPUrl: '/logo.svg', jpegOrPngUrl: '/logo.svg', alt: 'login', title: 'login'}}/>
           </div>;
     }
