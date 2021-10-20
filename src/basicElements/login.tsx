@@ -64,7 +64,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export const Login = () => {
-const [forgotPass, setForgotPass] = useState(0);
+const [forgotPass, setForgotPass] = useState(1);
 const [loading, setLoading] = useState(false);
 const { enqueueSnackbar } = useSnackbar();
 const classes = useStyles();
@@ -132,9 +132,10 @@ return <div className={classes.root} style={{maxHeight: '400px'}}>
                   />
                   <MyButton type="submit" label="Küldés" loading={loading}
                          className = {classes.element}/>
-                  <a className={classes.link} onClick={()=>{setForgotPass(0)}}>
+                   {/* dont use normal login now
+                   <a className={classes.link} onClick={()=>{setForgotPass(0)}}>
                     vissza a bejelentkezéshez
-                  </a>
+                  </a>*/}
                   </div>
           </Form>}
           <WebshopPicture className={classes.picture} picture={{webPUrl: '/logo.svg', jpegOrPngUrl: '/logo.svg', alt: 'login', title: 'login'}}/>

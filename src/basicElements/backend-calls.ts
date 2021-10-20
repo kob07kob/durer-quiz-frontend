@@ -64,6 +64,9 @@ export async function getCategory(auth: { Authorization: string }, uuid: string)
 }
 export async function sendEmail(email: string): Promise<string> {
     try {
+        console.log( JSON.stringify({
+            email: email,
+        }));
         const result = await fetch(`${serverUrl}/login/team/send-ott`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -73,8 +76,15 @@ export async function sendEmail(email: string): Promise<string> {
         });
         if (result.ok) return "";
         if (result.status === 420) return 'Túl sok próbálkozás!';
-        if (result.status === 403) return 'Tiltott művelet!'
-        else return 'A backenden még nem él az url';
+        if (result.status === 403) return 'Hibás email!'
+        else {
+            const errorObj = await result.json();
+            console.log(errorObj);
+            if(errorObj){
+                return errorObj.error || 'Ismeretlen hiba';
+            }
+            return 'Ismeretlen hiba';
+        }
     } catch (e: any) {
         console.log(e);
         return 'Nem sikerült csatlakozni a szerverhez';
