@@ -22,6 +22,8 @@ export interface Team{
     uuid: string;
     email: string;
     name: string;
+    starts_at: moment.Moment;
+    ends_at: moment.Moment
 }
 
 export interface Submission{
@@ -36,8 +38,8 @@ export interface Submission{
 }
 
 export interface Category{
-    ends_at: moment.Moment;
+    global_ends_at: moment.Moment;
     name: string;
-    starts_at: moment.Moment;
+    global_starts_at: moment.Moment;
     uuid: string;
 }

@@ -130,7 +130,7 @@ export const Excercise: React.FunctionComponent<MyProps> = (props: MyProps) => {
             }),
           });
           if (!result.ok) {
-            enqueueSnackbar((await result.json() as any)?.error || 'Hiba a beküldés során!', { variant: 'error' });
+            enqueueSnackbar((await result.json() as any)?.error || 'Hiba a beküldés során!' + ' próbáld meg frissíteni az oldalt', { variant: 'error' });
             values.result = '';
             setRefresh(!refresh);
             setLoading(false);
