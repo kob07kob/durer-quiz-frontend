@@ -1,21 +1,20 @@
-import React, { useState } from "react";
-import { Button, Divider, Link, makeStyles, Snackbar, TextField } from '@material-ui/core';
-import Form from './form/form';
-import * as Yup from 'yup';
-import Field from './form/field';
-import { LabelType, MyTextInput } from "./mytext-input";
+import React, { Dispatch, useState } from "react";
+import { makeStyles } from '@material-ui/core';
 import { MyButton } from "./mybutton";
-import { useLogin } from "./user-hooks/user-hooks";
 import { useSnackbar } from 'notistack';
 import { WebshopPicture } from "./picture-component";
-import { sendEmail } from "./backend-calls";
+import { startGame } from "./backend-calls";
+import { useAuthHeader } from './user-hooks/user-hooks';
+import { Exercise, Team } from './backend-types';
+import { getCurrentExercise, getTeam } from './backend-calls';
+import moment from 'moment';
 
 
 /*
 TODO:
-    - style was only yanked, may looks bad
-    - manage user state
-    - wire callbaclks to backend
+    - style was only yanked, may looks bad - alright now
+    - manage user state - relay done (strategias redirect nedded)
+    - wire callbaclks to backend - team starts timer with clicking on valto
 */
 
 const useStyles = makeStyles(theme => ({
@@ -48,6 +47,8 @@ const useStyles = makeStyles(theme => ({
       flexWrap: 'wrap',
       alignItems: 'center',
       paddingBottom: '10px',
+      zIndex: 2,
+      position: 'relative',
     },
     element: {
       width: '100%',
@@ -71,19 +72,50 @@ const useStyles = makeStyles(theme => ({
     }
   }))
 
+  interface Props {
+    team: Team;
+    setTeam: Dispatch<Team>;
+    setExcercise: Dispatch<Exercise>;
+    inProgress: boolean;
+  }
 
-  export const Splash = () => {
-    const [forgotPass, setForgotPass] = useState(0);
-    const [loading, setLoading] = useState(false);
+
+  export const Splash = (props: Props) => {
+    const authHeader = useAuthHeader();
+    const [loading, setLoading]= useState(false);
     const { enqueueSnackbar } = useSnackbar();
     const classes = useStyles();
+    const startValto = ()=>{
+      setLoading(true);
+      startGame(authHeader).then(result=>{
+        if(result){
+          enqueueSnackbar(result);
+          setLoading(false);
+          return;
+        }
+        getTeam(authHeader).then(team => {
+          if (team !== null)
+            props.setTeam(team)
+        });
+        getCurrentExercise(authHeader).then(exc => {
+          if (exc !== null)
+            props.setExcercise(exc);
+        });
+        setLoading(false);
+      }).catch(e=>{
+        enqueueSnackbar('Ismeretlen hiba');
+        setLoading(false);
+      });
+      
+    };
+    const relayFinished = props.team?.ends_at?.isBefore(moment.now()) || !props.inProgress;
     return <div className={classes.root} style={{maxHeight: '400px'}}>
             {<div className={classes.formDiv}>
                 <MyButton type="button" label="Stratégiás" loading={loading}
                         className = {classes.element}/>
-                <MyButton type="button" label="Váltó" loading={loading}
-                        className = {classes.element}/>
+                <MyButton type="button" label={relayFinished?"A váltó már nem elérhető":"Váltó"} loading={loading}
+                        className = {classes.element} onClick={startValto} disabled={relayFinished}/>
             </div>}
-              <WebshopPicture className={classes.picture} picture={{webPUrl: '/logo_kicsik_nagyok.png', jpegOrPngUrl: '/logo_kicsik_nagyok.png', alt: 'login', title: 'login'}}/>
+            <WebshopPicture className={classes.picture} picture={{webPUrl: '/logo_kicsik_nagyok.png', jpegOrPngUrl: '/logo_kicsik_nagyok.png', alt: 'login', title: 'login'}}/>
           </div>;
     }

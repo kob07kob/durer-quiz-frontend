@@ -50,21 +50,16 @@ function Main() {
       </Layout>
     )
   }
-  const type = getReactComponent(user, category, team);
+  const inProgress = exercise?.category_ord > 0;
+  const type = getReactComponent(user, category, inProgress, team, info);
   return (
     <Layout>
       <GoogleAnalytics identifier={'G-SZ3DY6CGPS'} />
       <LoadUserOnClientSide />
       {type===MainComponentType.Login && <Login />}
-      {type===MainComponentType.Splash && <Splash />}
-      {type===MainComponentType.Infos && <Infos exercise={exercise} setExercise={setExercise} teamFinished={team.starts_at?.isBefore(moment.now()) || false} teamInProgress={exercise?.category_ord > 0} setInfo={setInfo} teamName={team.name} categoryName={category.name} categoryEnd={team.ends_at || null} categoryStart={team.starts_at || null} />}
+      {type===MainComponentType.Splash && <Splash team={team} setTeam={setTeam} setExcercise={setExercise} inProgress={inProgress}/>}
+      {type===MainComponentType.Infos && <Infos exercise={exercise} setExercise={setExercise} teamFinished={category.global_ends_at?.isBefore(moment.now())} teamInProgress={inProgress} setInfo={setInfo} teamName={team.name} categoryName={category.name} categoryEnd={category.global_ends_at || null} categoryStart={category.global_starts_at || null} />}
       {type===MainComponentType.Excercise && <Excercise auth={authHeader} exercise={exercise} endsAt={team?.ends_at || null} teamName={team.name} setInfo={setInfo} />}
-      {/*!user && <Login />}*/}
-      {/*TODO add user state management logic as separated function
-      current logic is flawed, as it wont let you return to the splash screen*/}
-      {/*user && info && (!team.starts_at || !team.ends_at) && <Login />}//splach screen
-      {user && info && team.starts_at && team.ends_at && <Infos exercise={exercise} setExercise={setExercise} teamFinished={team.starts_at?.isBefore(moment.now())} teamInProgress={exercise?.category_ord > 0} setInfo={setInfo} teamName={team.name} categoryName={category.name} categoryEnd={team.ends_at} categoryStart={team.starts_at} />}
-  {user && !info && team.starts_at && team.ends_at && <Excercise auth={authHeader} exercise={exercise} endsAt={team?.ends_at} teamName={team.name} setInfo={setInfo} />*/}
     </Layout>
   );
 }
@@ -75,15 +70,18 @@ enum MainComponentType {
   Login, Splash, Infos, Excercise
 }
 
-function getReactComponent(user: CurrentUser | null, category: Category, team: Team, t = moment.now()): MainComponentType {
+function getReactComponent(user: CurrentUser | null,category:Category, inProgress: boolean, team: Team, info: boolean, t = moment.now()): MainComponentType {
   if (!user || !team) return MainComponentType.Login;
-  if (!team.starts_at) {
+  if(info){
+    return MainComponentType.Infos;
+  }
+  if(category.global_ends_at.isBefore(t)){
+    return MainComponentType.Excercise;
+  }
+  if (!team.starts_at || !team?.ends_at || team.ends_at?.isBefore(t) || !inProgress) {
     return MainComponentType.Splash;
   }
-  if (category?.global_starts_at.isAfter(t) && team?.ends_at?.isBefore(t)){
-    return MainComponentType.Infos
-  }
-  if(team?.ends_at?.isBefore(t)){
+  if(team?.starts_at?.isBefore(t) && team.ends_at?.isAfter(t) && inProgress){
     return MainComponentType.Excercise;
   }
   return MainComponentType.Infos;

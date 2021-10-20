@@ -91,10 +91,10 @@ useEffect(()=>{
       let now = moment();
       let enabled2 = start?.isBefore(now) && end?.isAfter(now);
       if(enabled2 !== enabledState ){
-        console.log('ratatata');
         if(enabled2){
-          console.log('insidejoke');
-          getCurrentExercise(authHeader).then(exc => {
+          setEnabledState(enabled2);
+          clearInterval(timerFunc);
+          /* getCurrentExercise(authHeader).then(exc => {
             if(exc!==null){
               props.setExercise(exc);
             } else {
@@ -106,7 +106,7 @@ useEffect(()=>{
             props.setExercise({} as Exercise)
             setEnabledState(enabled2);
             clearInterval(timerFunc);
-          });
+          });*/
         } else{
           setEnabledState(enabled2);
         }
@@ -124,7 +124,7 @@ return <div className={classes.root} style={{maxHeight: '400px'}}>
                     <div className = {classes.infoElement}><b>Kitöltés kezdete:</b> {props.categoryStart?.format("YYYY:MM:DD HH:mm")}</div>
                     <div className = {classes.infoElement}><b>Kitöltés vége:</b> {props.categoryEnd?.format("YYYY:MM:DD HH:mm")}</div>
                     <div style={{display: 'flex', flex: 1}}></div>
-                      <MyButton type='button' label={props.teamInProgress?"Kitöltés folytatása":(!!props.exercise?.uuid?"Kitöltés megkezdése":"Eredmények megtekintése")} onClick={(event:any)=>{props.setInfo(false)}}
+                      <MyButton type='button' label={props.teamInProgress?"Kitöltés folytatása":(props.categoryEnd?.isAfter(moment.now())?"Kitöltés megkezdése":"Eredmények megtekintése")} onClick={(event:any)=>{props.setInfo(false)}}
                           className = {classes.element} disabled={!enabledState && !props.teamFinished}/>
                   <a className={classes.link} onClick={()=>{logout()}}>
                     Kijelentkezés
