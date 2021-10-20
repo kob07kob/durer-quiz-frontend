@@ -17,7 +17,7 @@ import moment from "moment";
 export interface MyProps {
   exercise: Exercise;
   auth: { Authorization: string };
-  endsAt: moment.Moment | null;
+  endsAt: moment.Moment;
   teamName: string;
   setInfo: (val:boolean)=>any;
 }

@@ -56,10 +56,10 @@ function Main() {
     <Layout>
       <GoogleAnalytics identifier={'G-SZ3DY6CGPS'} />
       <LoadUserOnClientSide />
-      {type===MainComponentType.Login && <Login />}
-      {type===MainComponentType.Splash && <Splash team={team} setTeam={setTeam} setExcercise={setExercise} inProgress={inProgress}/>}
-      {type===MainComponentType.Infos && <Infos exercise={exercise} setExercise={setExercise} teamFinished={category.global_ends_at?.isBefore(moment.now())} teamInProgress={inProgress} setInfo={setInfo} teamName={team.name} categoryName={category.name} categoryEnd={category.global_ends_at || null} categoryStart={category.global_starts_at || null} />}
-      {type===MainComponentType.Excercise && <Excercise auth={authHeader} exercise={exercise} endsAt={team?.ends_at || null} teamName={team.name} setInfo={setInfo} />}
+      {type === MainComponentType.Login && <Login />}
+      {type === MainComponentType.Splash && <Splash team={team} setTeam={setTeam} setExcercise={setExercise} inProgress={inProgress} />}
+      {type === MainComponentType.Infos && <Infos exercise={exercise} setExercise={setExercise} teamFinished={category.global_ends_at?.isBefore(moment.now())} teamInProgress={inProgress} setInfo={setInfo} teamName={team.name} categoryName={category.name} categoryEnd={category.global_ends_at} categoryStart={category.global_starts_at} />}
+      {type === MainComponentType.Excercise && <Excercise auth={authHeader} exercise={exercise} endsAt={team?.ends_at} teamName={team.name} setInfo={setInfo} />}
     </Layout>
   );
 }
@@ -70,18 +70,18 @@ enum MainComponentType {
   Login, Splash, Infos, Excercise
 }
 
-function getReactComponent(user: CurrentUser | null,category:Category, inProgress: boolean, team: Team, info: boolean, t = moment.now()): MainComponentType {
+function getReactComponent(user: CurrentUser | null, category: Category, inProgress: boolean, team: Team, info: boolean, t = moment.now()): MainComponentType {
   if (!user || !team) return MainComponentType.Login;
-  if(info){
+  if (info) {
     return MainComponentType.Infos;
   }
-  if(category.global_ends_at.isBefore(t)){
+  if (category.global_ends_at.isBefore(t)) {
     return MainComponentType.Excercise;
   }
   if (!team.starts_at || !team?.ends_at || team.ends_at?.isBefore(t) || !inProgress) {
     return MainComponentType.Splash;
   }
-  if(team?.starts_at?.isBefore(t) && team.ends_at?.isAfter(t) && inProgress){
+  if (team?.starts_at?.isBefore(t) && team.ends_at?.isAfter(t) && inProgress) {
     return MainComponentType.Excercise;
   }
   return MainComponentType.Infos;

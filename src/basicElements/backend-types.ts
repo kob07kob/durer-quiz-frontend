@@ -22,8 +22,8 @@ export interface Team{
     uuid: string;
     email: string;
     name: string;
-    starts_at?: moment.Moment;
-    ends_at?: moment.Moment
+    starts_at: moment.Moment;
+    ends_at: moment.Moment
 }
 
 export interface Submission{

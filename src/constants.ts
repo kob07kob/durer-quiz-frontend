@@ -1,1 +1,1 @@
-export const serverUrl = 'http://localhost:5000/api/v1'; //'https://verseny.durerinfo.hu/api/v1';
+export const serverUrl = 'https://verseny.durerinfo.hu/api/v1';
